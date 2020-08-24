@@ -15,9 +15,19 @@ using namespace std;
         float precio;
         float volumen;
         string tipo[5] ;
+        Producto();
         Producto(float pes,float prec,float vol);
+        //GETTERS  
+        float getPeso();
+        float getPrecio();
+        float getVolumen();
+        void  setPeso(float peso);
+        void  setPrecio(float precio);
+        void  setVolumen(float volumen);
+        void  printProducto();
+       
     };
-
+    Producto::Producto(){   };
     Producto::Producto(float pes,float prec,float vol){
         peso = pes;
         precio = prec;
@@ -26,6 +36,30 @@ using namespace std;
         {
          tipo[i] = "0";
         }
+    }
+
+    // Getters y setters 
+    
+        float Producto::getPeso() {
+        	return this->peso;
+        }
+        void Producto::setPeso(float peso) {
+        	this->peso = peso;
+        }
+        float Producto::getPrecio() {
+        	return this->precio;
+        }
+        void Producto::setPrecio(float precio) {
+        	this->precio = precio;
+        }
+        float Producto::getVolumen() {
+        	return this->volumen;
+        }
+        void Producto::setVolumen(float volumen) {
+        	this->volumen = volumen;
+        }
+    void Producto::printProducto(){
+        cout << "Peso: "<<getPeso()<<"Precio: "<<getPrecio()<<"volumen: "<<getVolumen()<<endl;
     }
 // ===============================CLASE CELULARES
     class Celular : public Producto{     
@@ -70,21 +104,26 @@ using namespace std;
     class Usuario {     
     public:
         string nombre[numUsuarios];
-        Producto *Carrito[];
+        int indice;
+        Producto Carrito[10];
         Usuario();
         bool logear();
         int  menuCompras();
+        Producto getCarrito();
+        void addProductoCarrito(Producto product, int indice);
+        void  printCarrito(Producto Carrito[]);
     };
 
     Usuario::Usuario(){
         string marcas[5] = { "Carlos20", "Jesus97",  "Pablo3", "Maria2","Luisi" };
-
+        indice=0;
         for (int i = 0; i < numUsuarios; i++)
         {
             nombre[i]= marcas[i];
         }
         
     }
+    
     bool Usuario::logear(){
             string login;
             Usuario user;
@@ -108,6 +147,28 @@ using namespace std;
      
         return resultado;
     };
+
+    void Usuario::addProductoCarrito(Producto product, int indice){
+        Carrito[indice]=product;
+    }
+    void Usuario::printCarrito(Producto Carrito[]){
+        int i=0;
+        Producto p1;
+        p1 = Carrito[0];
+        p1.printProducto();
+        p1 = Carrito[1];
+        p1.printProducto();
+
+    //     if (Carrito[i]==NULL)
+    //     {
+    //         cout << "No hay nada" << endl;
+    //     }else if(Carrito[i]!=NULL)
+    //     {
+    //         Carrito[i].printProducto();
+    //     }
+        
+        
+    }
 
 // ====================================================================== FUNCIONES ===============================================
     // Menu de opciones para logearse 
@@ -141,15 +202,15 @@ using namespace std;
         switch (opcion)
         {
         case 1:
-            menuCompras();
+            // menuCompras();
             break;
         
         case 2:
-            menuVerCarro();
+            // menuVerCarro();
             break;
         
         case 3:
-            menuVerCarro();
+            // menuVerCarro();
             break;
         
         default:
@@ -209,7 +270,6 @@ using namespace std;
     }
 
 
-
 // ====================================================================== Programa principal  ===============================================
 
 int main () 
@@ -219,8 +279,12 @@ int main ()
     // Variables necesarias
     int resultado;
     string nom_login;
-    string fullName;
-
+    
+    Producto p1 = Producto(60.5,50,10);
+    Producto p2 = Producto(70.5,50000,1540);
+    u1->addProductoCarrito(p1,0);
+    u1->addProductoCarrito(p2,1);
+    u1->printCarrito(u1->Carrito);
         while ((resultado = menuLogin() ) != 0)
         {
             system("clear");
