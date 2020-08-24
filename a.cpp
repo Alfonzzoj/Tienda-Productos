@@ -7,6 +7,7 @@ using namespace std;
 // ====================================================================== VAR GLOBALES ==========================================
     #define numUsuarios  5  //Indica la cantidad de usuarios que quieres tener 
     #define numProductos 50 //Tamano de tu carrito de compras 
+    #define Cuentas_de_usuario { "Carlos20", "Jesus97",  "Pablo3", "Maria2","Luisi" } //Nombres de usuario que puede usar para logear
 // ====================================================================== CLASES ===============================================
 
 // ==================================================CLASE PRODUCTO
@@ -113,10 +114,11 @@ using namespace std;
         Producto getCarrito();
         void addProductoCarrito(Producto product);
         void  printCarrito(Producto Carrito[]);
+        void limpiarCarrito(Producto Carrito[]);
     };
 
     Usuario::Usuario(){
-        string marcas[5] = { "Carlos20", "Jesus97",  "Pablo3", "Maria2","Luisi" };
+        string marcas[5] = Cuentas_de_usuario;
         indice=0;
         for (int i = 0; i < numUsuarios; i++)
         {
@@ -188,6 +190,16 @@ using namespace std;
 
     }
 
+    void Usuario::limpiarCarrito(Producto Carrito[]){
+        for (int i = 0; i < ContadorElementosEnCarrito; i++){
+            Producto vacio;
+            Carrito[i]= vacio;
+        }
+        ContadorElementosEnCarrito= 0;
+        indice = 0;
+        cout << "Gracias por comprar :)"<<endl;
+        cout << "Carrito vacio"<<endl;
+    }
 // ====================================================================== FUNCIONES ===============================================
     // Menu de opciones para logearse 
     int  menuLogin(){
@@ -205,19 +217,21 @@ using namespace std;
     }
     
        // Menu de compras-> marcas 
-    int  menuComprasMarcas(){
+    int  menuComprasMarcas(Producto productos[]){
 		int opcion;
 		cout <<"\n\n";
 		cout << "\t\t  ======  Sistema de Compras    ======"<<endl;
 		cout << "\t\t  \t======  Tienda  ====";
 		cout << "\t\t  ======  Marcas disponibles  ====";
 		cout <<"\n\n";
-		cout << "\n \t 1. Televisor ";
-		cout << "\n \t 2. Celular    ";
-		cout << "\n \t 3. Computador     ";
-		cout << "\n\n  4. Regresar  ";
+        for (int i = 0; i < 5; i++)
+        {
+		    cout << "\n \t "<<i+1<<". "<<productos[i].tipo[i]<<endl;   
+        }        
+		cout << "\n\n  6. Regresar  "<<endl;
 		cout << "\t Seleccione su producto :=> ";
 		cin>>opcion;
+        cout<< "Selecciono "<<productos[opcion].tipo[opcion]<<endl;
 		return opcion;
     }
     // Menu de compras 
@@ -234,7 +248,7 @@ using namespace std;
 		cout << "\n \t 1. Televisor ";
 		cout << "\n \t 2. Celular    ";
 		cout << "\n \t 3. Computador     ";
-		cout << "\n \t 4. Regresar  ";
+		cout << "\n \t 0. Regresar  ";
 		cout << "\n \t\t Seleccione su producto :=> ";
 		cin>>opcion;
 		cout << "\n \t\t === Elemento agregado al carro === ";
@@ -243,6 +257,13 @@ using namespace std;
     // Menu de compras 
     int  menuVerCarro(){
 		int opcion=4;
+		cout <<"\n\n";
+
+		return opcion;
+    }
+    // Menu de compras 
+    int  menuPagar(){
+		int opcion=5;
 		cout <<"\n\n";
 
 		return opcion;
@@ -258,7 +279,7 @@ using namespace std;
 		cout << "\n \t 1. Seleccionar Producto ";
 		cout << "\n \t 2. Ver Carrito    ";
 		cout << "\n \t 3. Pagar Carrito    ";
-		cout << "\n \t 4. Regresar      "<<endl;
+		cout << "\n \t 0. Regresar      "<<endl;
 		cout << "\n \t\t Seleccione su Opcion :=> ";
 		cin>>opcion;
         switch (opcion)
@@ -272,7 +293,7 @@ using namespace std;
             break;
         
         case 3:
-            // menuVerCarro();
+            return menuPagar();
             break;
         
         default:
@@ -288,6 +309,7 @@ int main ()
 {
     system("clear");
     // CREACION DE OBJETOS 
+    Usuario users;
     Usuario *u1 = new Usuario();            //Usuarios Principal
     // Celulares
     Celular cel1   =    Celular(80,200,40);
@@ -311,9 +333,10 @@ int main ()
     Computador pc5 = Computador(100,1000,100);
     Computador compus[5] = {pc1,pc2,pc3,pc4,pc5};
     // Variables necesarias
-    int resultado;
+    int resultado,numProducto;
+    float precioTotal=0;
     string nom_login;
-    
+    char letra;
     Producto p1 = Producto(60.5,50,10);
     Producto p2 = Producto(70.5,50000,1540);
     // u1->addProductoCarrito(pc1,0);
@@ -331,30 +354,114 @@ int main ()
                     {
                         switch (resultado= menuGestionCarro())
                         {
-                        case 1: //Resultado de 1-3 
-
-                            u1->addProductoCarrito(tv1)   ;
-                        break;
-                        
-                        case 2: //Resultado de 1-3 
-
-                            u1->addProductoCarrito(cel1)   ;
-                        break;
-                        
-                        case 3: //Resultado de 1-3 
-
-                            u1->addProductoCarrito(pc1)   ;
-                        break;
-                        
-                        case 4: //Resultado de 4-> Seleccione ver carrio 
-                            cout<<"ENTRE ";
-                            cout<<"ENTRE ";
-                            u1->printCarrito(u1->Carrito);
-                        break;
-                        
-                        default:
+                            // ======================================Comprar T E L E V I S O R 
+                            case 1: //Resultado de 1-3 
+                            numProducto = menuComprasMarcas(teves);
+                                switch (numProducto)
+                                {
+                                case 1:
+                                    u1->addProductoCarrito(tv1)   ;
+                                    precioTotal+= tv1.getPrecio();                                
+                                    break;
+                                case 2:
+                                    u1->addProductoCarrito(tv2)   ;
+                                    precioTotal+= tv2.getPrecio();                                
+                                    break;
+                                case 3:
+                                    u1->addProductoCarrito(tv3)   ;
+                                    precioTotal+= tv3.getPrecio();                                
+                                    break;
+                                case 4:
+                                    u1->addProductoCarrito(tv4)   ;
+                                    precioTotal+= tv4.getPrecio();                                
+                                    break;
+                                case 5:
+                                    u1->addProductoCarrito(tv5)   ;
+                                    precioTotal+= tv5.getPrecio();                                
+                                    break;
+                                default:
+                                    break;
+                                }
                             break;
-                        }
+                        
+                            // ======================================Comprar C E L U L A L E R E S 
+                            case 2: //Resultado de 1-3 
+                            numProducto = menuComprasMarcas(celus);
+                                switch (numProducto)
+                                {
+                                case 1:
+                                    u1->addProductoCarrito(cel1)   ;
+                                    precioTotal+= cel1.getPrecio();                                
+                                    break;
+                                case 2:
+                                    u1->addProductoCarrito(cel2)   ;
+                                    precioTotal+= cel2.getPrecio();                                
+                                    break;
+                                case 3:
+                                    u1->addProductoCarrito(cel3)   ;
+                                    precioTotal+= cel3.getPrecio();                                
+                                    break;
+                                case 4:
+                                    u1->addProductoCarrito(cel4)   ;
+                                    precioTotal+= cel4.getPrecio();                                
+                                    break;
+                                case 5:
+                                    u1->addProductoCarrito(cel5)   ;
+                                    precioTotal+= cel5.getPrecio();                                
+                                    break;
+                                default:
+                                    break;
+                                }
+                            break;
+
+                            // ======================================Comprar C O M P U T A D O R A S
+                            case 3: //Resultado de 1-3 
+                            numProducto = menuComprasMarcas(compus);
+                                switch (numProducto)
+                                {
+                                case 1:
+                                    u1->addProductoCarrito(pc1)   ;
+                                    precioTotal+= pc1.getPrecio();                                
+                                    break;
+                                case 2:
+                                    u1->addProductoCarrito(pc2)   ;
+                                    precioTotal+= pc2.getPrecio();                                
+                                    break;
+                                case 3:
+                                    u1->addProductoCarrito(pc3)   ;
+                                    precioTotal+= pc3.getPrecio();                                
+                                    break;
+                                case 4:
+                                    u1->addProductoCarrito(pc4)   ;
+                                    precioTotal+= pc4.getPrecio();                                
+                                    break;
+                                case 5:
+                                    u1->addProductoCarrito(pc5)   ;
+                                    precioTotal+= pc5.getPrecio();                                
+                                    break;
+                                default:
+                                    break;
+                                }
+                            break;
+                            // ======================================CASO VER CARRITO
+
+                            case 4: //Resultado de 4 opc 2-> Seleccione ver carrio 
+                                u1->printCarrito(u1->Carrito);
+                            break;
+                            // ======================================CASO PAGAR CARRITO 
+
+                            case 5: //Resultado de 5 opc 3-> Seleccione Pagar carrio 
+                                u1->printCarrito(u1->Carrito);
+                                cout << "Precio total es de: "<<precioTotal<<endl;
+                                cout << "Pulse cualquier tecla para pagar..."<<endl;
+                                cin >> letra;
+                                u1->limpiarCarrito(u1->Carrito);
+
+                            break;
+                            
+                            default:
+                                break;
+                            }
                     }
                      
                 }else
