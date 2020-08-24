@@ -5,7 +5,8 @@
 
 using namespace std; 
 // ====================================================================== VAR GLOBALES ==========================================
-    #define numUsuarios 5  //Indica la cantidad de usuarios que quieres tener 
+    #define numUsuarios  5  //Indica la cantidad de usuarios que quieres tener 
+    #define numProductos 50 //Tamano de tu carrito de compras 
 // ====================================================================== CLASES ===============================================
 
 // ==================================================CLASE PRODUCTO
@@ -38,8 +39,7 @@ using namespace std;
         }
     }
 
-    // Getters y setters 
-    
+    // Getters y setters  
         float Producto::getPeso() {
         	return this->peso;
         }
@@ -59,7 +59,7 @@ using namespace std;
         	this->volumen = volumen;
         }
     void Producto::printProducto(){
-        cout << "Peso: "<<getPeso()<<"Precio: "<<getPrecio()<<"volumen: "<<getVolumen()<<endl;
+        cout << "\tPeso: "<<getPeso()<<"\tPrecio: "<<getPrecio()<<"\tVolumen: "<<getVolumen()<<endl;
     }
 // ===============================CLASE CELULARES
     class Celular : public Producto{     
@@ -104,13 +104,14 @@ using namespace std;
     class Usuario {     
     public:
         string nombre[numUsuarios];
-        int indice;
-        Producto Carrito[10];
+        static int indice;
+        static int ContadorElementosEnCarrito;
+        Producto Carrito[numProductos];
         Usuario();
         bool logear();
         int  menuCompras();
         Producto getCarrito();
-        void addProductoCarrito(Producto product, int indice);
+        void addProductoCarrito(Producto product);
         void  printCarrito(Producto Carrito[]);
     };
 
@@ -121,8 +122,10 @@ using namespace std;
         {
             nombre[i]= marcas[i];
         }
-        
     }
+    int Usuario::ContadorElementosEnCarrito= 0;
+    int Usuario::indice= 0;
+
     
     bool Usuario::logear(){
             string login;
@@ -148,26 +151,41 @@ using namespace std;
         return resultado;
     };
 
-    void Usuario::addProductoCarrito(Producto product, int indice){
+    void Usuario::addProductoCarrito(Producto product){
         Carrito[indice]=product;
+        ContadorElementosEnCarrito++;
+        indice++;
     }
     void Usuario::printCarrito(Producto Carrito[]){
-        int i=0;
-        Producto p1;
-        p1 = Carrito[0];
-        p1.printProducto();
-        p1 = Carrito[1];
-        p1.printProducto();
+        cout << "\t\t  ======  Sistema de Compras    ======"<<endl;
+		cout << "\t\t  ======  Usuario Logeado       ======"<<endl;
+		cout << "\t\t  ======  Gestion de Carrito    ===="<<endl;
+		cout << "\t\t  ======  Ver Carrito Actual  ====";
+		cout << "\n\n";
+        cout <<"=== Carrito de compras Actual"<<endl;
+        cout << "Tiene " <<ContadorElementosEnCarrito<<" Elementos cargados"<<endl;
+        if (ContadorElementosEnCarrito==0)
+        {
+        cout << "Carrito Vacio" << endl;
+        }else{
+            for (int i = 0; i < ContadorElementosEnCarrito; i++)
+            {
+                
+                Producto p1;
+                p1 = Carrito[i];
+                if (p1.getPeso()==0)
+                {
 
-    //     if (Carrito[i]==NULL)
-    //     {
-    //         cout << "No hay nada" << endl;
-    //     }else if(Carrito[i]!=NULL)
-    //     {
-    //         Carrito[i].printProducto();
-    //     }
-        
-        
+                }else       {                    
+                    cout <<i+1<<"- ";
+                    p1.printProducto();   
+                }
+                
+                
+            }
+
+        }
+
     }
 
 // ====================================================================== FUNCIONES ===============================================
@@ -185,43 +203,10 @@ using namespace std;
 		cin>>opcion;
 		return opcion;
     }
-    // Menu de opciones gestionar carro 
-    int  menuGestionCarro(){
-		int opcion;
-        cout <<"\n\n";
-		cout << "\t\t  ======  Sistema de Compras    ======"<<endl;
-		cout << "\t\t  ======  Usuario:"<<endl<<"    ======"<<endl;
-		cout << "\t\t  ======  Gestion de Carrito  ====";
-		cout <<"\n\n";
-		cout << "\n \t 1. Seleccionar Producto ";
-		cout << "\n \t 2. Ver Carrito    ";
-		cout << "\n \t 3. Pagar Carrito    ";
-		cout << "\n\n  4. Regresar      " ;
-		cout << "\t Seleccione su Opcion :=> ";
-		cin>>opcion;
-        switch (opcion)
-        {
-        case 1:
-            // menuCompras();
-            break;
-        
-        case 2:
-            // menuVerCarro();
-            break;
-        
-        case 3:
-            // menuVerCarro();
-            break;
-        
-        default:
-            break;
-        }
-        return opcion;
-    }
-    // Menu de compras-> marcas 
+    
+       // Menu de compras-> marcas 
     int  menuComprasMarcas(){
 		int opcion;
-
 		cout <<"\n\n";
 		cout << "\t\t  ======  Sistema de Compras    ======"<<endl;
 		cout << "\t\t  \t======  Tienda  ====";
@@ -235,56 +220,105 @@ using namespace std;
 		cin>>opcion;
 		return opcion;
     }
-
     // Menu de compras 
     int  menuCompras(){
+        system("clear");
 		int opcion;
 
 		cout <<"\n\n";
 		cout << "\t\t  ======  Sistema de Compras    ======"<<endl;
-		cout << "\t\t  \t======  Tienda  ====";
-		cout << "\t\t  ======  Productos disponibles  ====";
+		cout << "\t\t  ======  Usuario Logeado       ======"<<endl;
+		cout << "\t\t  ======  Gestion de Carrito    ====="<<endl;
+		cout << "\t\t  ======  Seleccionar Producto  ====";
 		cout <<"\n\n";
 		cout << "\n \t 1. Televisor ";
 		cout << "\n \t 2. Celular    ";
 		cout << "\n \t 3. Computador     ";
-		cout << "\n\n  4. Regresar  ";
-		cout << "\t Seleccione su producto :=> ";
+		cout << "\n \t 4. Regresar  ";
+		cout << "\n \t\t Seleccione su producto :=> ";
 		cin>>opcion;
+		cout << "\n \t\t === Elemento agregado al carro === ";
 		return opcion;
     }
     // Menu de compras 
     int  menuVerCarro(){
-		int opcion;
-
+		int opcion=4;
 		cout <<"\n\n";
-		cout << "\t\t  ======  Sistema de Compras    ======"<<endl;
-		cout << "\t\t  \t======  Tienda  ====";
-		cout << "\t\t  ======  Carrito Actual  ====";
-		cout << "\n\n";
-		cout << "\n \t 1. arrayde carrito ";
-		cout << "\n\n  4. Regresar  ";
-		cout << "\t Seleccione su producto :=> ";
-		cin>>opcion;
+
 		return opcion;
     }
-
+    // Menu de opciones gestionar carro 
+    int  menuGestionCarro(){
+		int opcion;
+        cout <<"\n\n";
+		cout << "\t\t  ======  Sistema de Compras    ======"<<endl;
+		cout << "\t\t  ======  Usuario Logeado       ======"<<endl;
+		cout << "\t\t  ======  Gestion de Carrito    =====";
+		cout <<"\n\n";
+		cout << "\n \t 1. Seleccionar Producto ";
+		cout << "\n \t 2. Ver Carrito    ";
+		cout << "\n \t 3. Pagar Carrito    ";
+		cout << "\n \t 4. Regresar      "<<endl;
+		cout << "\n \t\t Seleccione su Opcion :=> ";
+		cin>>opcion;
+        switch (opcion)
+        {
+        case 1:
+            return menuCompras();
+            break;
+        
+        case 2:
+            return menuVerCarro();
+            break;
+        
+        case 3:
+            // menuVerCarro();
+            break;
+        
+        default:
+            break;
+        }
+        return opcion;
+    }
+ 
 
 // ====================================================================== Programa principal  ===============================================
 
 int main () 
 {
+    system("clear");
     // CREACION DE OBJETOS 
-    Usuario *u1 = new Usuario();
+    Usuario *u1 = new Usuario();            //Usuarios Principal
+    // Celulares
+    Celular cel1   =    Celular(80,200,40);
+    Celular cel2   =    Celular(70,300,30);
+    Celular cel3   =    Celular(60,100,60);
+    Celular cel4   =    Celular(50,400,20);
+    Celular cel5   =    Celular(40,900,10);
+    Celular celus[5] = {cel1,cel2,cel3,cel4,cel5};
+    // Televisores
+    Televisor tv1  =  Televisor(100,200,200);
+    Televisor tv2  =  Televisor(100,250,300);
+    Televisor tv3  =  Televisor(100,300,400);
+    Televisor tv4  =  Televisor(100,400,600);
+    Televisor tv5  =  Televisor(100,500,1000);
+    Televisor teves[5] = {tv1,tv2,tv3,tv4,tv5};
+    // Computadores
+    Computador pc1 = Computador(220,300,500);
+    Computador pc2 = Computador(200,400,400);
+    Computador pc3 = Computador(150,600,300);
+    Computador pc4 = Computador(110,800,200);
+    Computador pc5 = Computador(100,1000,100);
+    Computador compus[5] = {pc1,pc2,pc3,pc4,pc5};
     // Variables necesarias
     int resultado;
     string nom_login;
     
     Producto p1 = Producto(60.5,50,10);
     Producto p2 = Producto(70.5,50000,1540);
-    u1->addProductoCarrito(p1,0);
-    u1->addProductoCarrito(p2,1);
-    u1->printCarrito(u1->Carrito);
+    // u1->addProductoCarrito(pc1,0);
+    // u1->addProductoCarrito(p2,1);
+    // u1->printCarrito(u1->Carrito);
         while ((resultado = menuLogin() ) != 0)
         {
             system("clear");
@@ -293,7 +327,36 @@ int main ()
             // Ingresar usuario
             case 1:
                 if (u1->logear()==true)     { //Usuario correcto 
-                    menuGestionCarro();
+                    while ((resultado )!=0)
+                    {
+                        switch (resultado= menuGestionCarro())
+                        {
+                        case 1: //Resultado de 1-3 
+
+                            u1->addProductoCarrito(tv1)   ;
+                        break;
+                        
+                        case 2: //Resultado de 1-3 
+
+                            u1->addProductoCarrito(cel1)   ;
+                        break;
+                        
+                        case 3: //Resultado de 1-3 
+
+                            u1->addProductoCarrito(pc1)   ;
+                        break;
+                        
+                        case 4: //Resultado de 4-> Seleccione ver carrio 
+                            cout<<"ENTRE ";
+                            cout<<"ENTRE ";
+                            u1->printCarrito(u1->Carrito);
+                        break;
+                        
+                        default:
+                            break;
+                        }
+                    }
+                     
                 }else
                 {
                     cout<<"Logeo incorrecto"<<endl;
