@@ -110,8 +110,6 @@ using namespace std;
         Producto Carrito[numProductos];
         Usuario();
         bool logear();
-        int  menuCompras();
-        Producto getCarrito();
         void addProductoCarrito(Producto product);
         void  printCarrito(Producto Carrito[]);
         void limpiarCarrito(Producto Carrito[]);
@@ -215,8 +213,7 @@ using namespace std;
 		cin>>opcion;
 		return opcion;
     }
-    
-       // Menu de compras-> marcas 
+    // Menu de compras-> marcas 
     int  menuComprasMarcas(Producto productos[]){
 		int opcion;
 		cout <<"\n\n";
@@ -231,12 +228,12 @@ using namespace std;
 		cout << "\n\n  6. Regresar  "<<endl;
 		cout << "\t Seleccione su producto :=> ";
 		cin>>opcion;
-        cout<< "Selecciono "<<productos[opcion].tipo[opcion]<<endl;
+        cout<< "Selecciono "<<productos[0].tipo[--opcion]<<endl;
 		return opcion;
     }
     // Menu de compras 
     int  menuCompras(){
-        system("clear");
+        // system("clear");
 		int opcion;
 
 		cout <<"\n\n";
@@ -301,15 +298,13 @@ using namespace std;
         }
         return opcion;
     }
- 
 
 // ====================================================================== Programa principal  ===============================================
 
 int main () 
 {
-    system("clear");
+    // system("clear");
     // CREACION DE OBJETOS 
-    Usuario users;
     Usuario *u1 = new Usuario();            //Usuarios Principal
     // Celulares
     Celular cel1   =    Celular(80,200,40);
@@ -344,7 +339,7 @@ int main ()
     // u1->printCarrito(u1->Carrito);
         while ((resultado = menuLogin() ) != 0)
         {
-            system("clear");
+            // system("clear");
             switch (resultado){
 
             // Ingresar usuario
