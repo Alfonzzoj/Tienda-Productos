@@ -47,16 +47,19 @@ using namespace std;
 // ==================================================CLASE Usuario
     class Usuario {     
     public:
-        string nombre[numUsuarios];
+        string nombre;
         static int indice;
         static int ContadorElementosEnCarrito;
         Producto Carrito[numProductos];
         Usuario();
-        bool logear();
-        void addProductoCarrito(Producto product);
-        void  printCarrito(Producto Carrito[]);
-        void limpiarCarrito(Producto Carrito[]);
+        Usuario(char *new_nom);
+        bool    logear();
+        void    regisLogin(Usuario user);
+        void    addProductoCarrito(Producto product);
+        void    printCarrito(Producto Carrito[]);
+        void    limpiarCarrito(Producto Carrito[]);
+        void    limpiarC(Producto Carrito[]);
+        string  getNombre();
+        void    setNombre(string nombre);
+        string  registrarUsuario();
     };
-
-
-

@@ -6,7 +6,14 @@ int main ()
 {
     // system("clear");
     // CREACION DE OBJETOS 
+    
     Usuario *u1 = new Usuario();            //Usuarios Principal
+    Usuario *u2 = new Usuario();            //Usuarios Principal
+    Usuario *u3 = new Usuario();            //Usuarios Principal
+    Usuario *u4 = new Usuario();            //Usuarios Principal
+    Usuario *u5 = new Usuario();            //Usuarios Principal
+    // Personas *userPrincipal = new Personas();
+    // Usuario users[numUsuarios];
     // Celulares
     Celular cel1   =    Celular(80,200,40);
     Celular cel2   =    Celular(70,300,30);
@@ -45,7 +52,10 @@ int main ()
 
             // Ingresar usuario
             case 1:
-                if (u1->logear()==true)     { //Usuario correcto 
+                // if (u1->logear()==true)     { //Usuario correcto 
+                    u1->setNombre(u1->registrarUsuario());//Usuario correcto 
+                    cout << "Bienvenido :"<<u1->getNombre()<<endl;
+                    u1->limpiarC(u1->Carrito);
                     while ((resultado )!=0)
                     {
                         switch (resultado= menuGestionCarro())
@@ -160,11 +170,11 @@ int main ()
                             }
                     }
                      
-                }else
-                {
-                    cout<<"Logeo incorrecto"<<endl;
-                    break;
-                }
+                // }else     Fin si linea 55
+                // {
+                //     cout<<"Logeo incorrecto"<<endl;
+                //     break;
+                // }
                 
 
             break;

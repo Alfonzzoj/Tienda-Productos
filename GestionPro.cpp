@@ -60,12 +60,11 @@
     }
 // ==================================================CLASE Usuario
     Usuario::Usuario(){
-        string marcas[5] = Cuentas_de_usuario;
-        indice=0;
-        for (int i = 0; i < numUsuarios; i++)
-        {
-            nombre[i]= marcas[i];
-        }
+
+    }
+    Usuario::Usuario(char *new_nom){
+        nombre[0] = *new_nom;
+
     }
 
     int Usuario::ContadorElementosEnCarrito= 0;
@@ -77,15 +76,15 @@
             bool resultado = false;
             cout <<"Ingrese Nombre de usuario : ";
             cin >> login;
-            for (int i = 0; i < numUsuarios; i++)
-            {
-                if (login == user.nombre[i]) {
+            // for (int i = 0; i < numUsuarios; i++)
+            // {
+                if (login == user.nombre) {
                     cout <<"Usuario Extitoso : ";
                     resultado = true;
                     return resultado;
                 }
                 
-            }
+            // }
             if (resultado == false)
             {
                     cout <<"Usuario Incorrecto : ";
@@ -95,6 +94,9 @@
         return resultado;
     };
 
+    void Usuario::regisLogin(Usuario user){
+        
+    }
     void Usuario::addProductoCarrito(Producto product){
         Carrito[indice]=product;
         ContadorElementosEnCarrito++;
@@ -143,6 +145,29 @@
         cout << "Gracias por comprar :)"<<endl;
         cout << "Carrito vacio"<<endl;
     }
+    void    Usuario::limpiarC(Producto Carrito[]){
+        for (int i = 0; i < ContadorElementosEnCarrito; i++){
+            Producto vacio;
+            Carrito[i]= vacio;
+        }
+        ContadorElementosEnCarrito= 0;
+        indice = 0;
+    };
+    string Usuario::getNombre() {
+        return this->nombre;
+    }
+
+    void Usuario::setNombre(string nombre) {
+        this->nombre = nombre;
+    }
+    string Usuario::registrarUsuario( ){
+        string Nom_user;
+        cout << "Ingrese Usuario: "<<endl;
+        cin >> Nom_user;
+
+        return Nom_user;
+    }
+
 // ====================================================================== FUNCIONES ===============================================
     // Menu de opciones para logearse 
     int  menuLogin(){
@@ -243,3 +268,4 @@
         }
         return opcion;
     }
+
